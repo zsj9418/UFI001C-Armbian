@@ -80,7 +80,7 @@ jobs:
       - name: 上传 Armbian 镜像至 Release
         uses: ncipollo/release-action@main
         with:
-          artifacts: "msm8916-armbian/rootfs.img,msm8916-armbian/kernel/boot.img"
+          artifacts: "msm8916-armbian/rootfs-jammy.img,msm8916-armbian/kernel/boot.img"
           name: ${{ steps.repack.outputs.build_tag }}
           tag: ${{ steps.repack.outputs.build_tag }}
           allowUpdates: true
