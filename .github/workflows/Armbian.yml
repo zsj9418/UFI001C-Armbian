@@ -3,7 +3,7 @@
 # Copyright (C) 2023 https://github.com/windbell-project/msm8916-armbian
 #==========================================================================
 
-name: Rebuild armbian
+name: Rebuild Armbian
 
 on:
   workflow_dispatch:
