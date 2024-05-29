@@ -53,7 +53,7 @@ jobs:
           sudo mount /dev/loop404p1 armbian
           sudo cp -rfp armbian/* temp
           sudo cp common-file/* temp/tmp
-          sudo cp kernel/*-msm8916.deb temp/tmp
+          sudo cp kernel/*.deb temp/tmp
           sudo cp modem/firmware-${{ inputs.armbian_board }}.deb temp/tmp
           sudo mount --bind /proc temp/proc
           sudo mount --bind /dev temp/dev
@@ -80,7 +80,7 @@ jobs:
       - name: 上传 Armbian 镜像至 Release
         uses: ncipollo/release-action@main
         with:
-          artifacts: "msm8916-armbian/rootfs-noble-6.img,msm8916-armbian/kernel/boot.img"
+          artifacts: "msm8916-armbian/rootfs-noble.img,msm8916-armbian/kernel/boot.img"
           name: ${{ steps.repack.outputs.build_tag }}
           tag: ${{ steps.repack.outputs.build_tag }}
           allowUpdates: true
