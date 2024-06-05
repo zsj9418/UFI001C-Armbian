@@ -9,7 +9,7 @@ if [ ! -e /etc/NetworkManager/system-connections/USB.nmconnection ]; then
     nmcli device wifi hotspot \
                          ifname wlan0 \
                          con-name wifi \
-                         ssid 4G-UFI \
+                         ssid Armian \
                          password 12345678
 
     # Set priorities so it doesn't take precedence over WiFi/mobile connections
