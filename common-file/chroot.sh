@@ -25,7 +25,9 @@ common_set() {
     rm /usr/lib/systemd/system/openstick-startup-diagnose.service
     rm /usr/lib/systemd/system/openstick-startup-diagnose.timer
     cp /tmp/mobian-setup-usb-network /usr/sbin/
-    cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
+    cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service'
+    cp /tmp/gpioled /usr/sbin/
+    cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
     cp /tmp/openstick-expanddisk-startup.sh /usr/sbin/
     cp /tmp/rules.v4 /etc/iptables/
     touch /etc/fstab
@@ -39,6 +41,10 @@ common_set() {
     sed -i '21 s/$sim/sim:sel/' /usr/sbin/openstick-sim-changer.sh
     rm /etc/localtime
     ln -s /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
+    systemctl mask ModemManager.service
+    systemctl enable mobian-setup-usb-network.service
+    systemctl enable openstick-expanddisk-startup.service
+    systemctl enable gpioled.service
 }
 
 clean_file() {
