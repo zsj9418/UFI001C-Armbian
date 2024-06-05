@@ -1,0 +1,9 @@
+[Unit]
+Description=GPIO LED
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/gpioled
+
+[Install]
+WantedBy=multi-user.target
