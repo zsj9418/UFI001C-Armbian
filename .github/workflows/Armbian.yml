@@ -70,7 +70,7 @@ jobs:
           sudo umount armbian-msm8916
           sudo umount armbian
           sudo losetup -d /dev/loop404
-          sudo img2simg armbian-msm8916.img rootfs-noble-6.img
+          sudo img2simg armbian-msm8916.img rootfs-noble.img
           sudo rm temp.img
           sudo rm -rf armbian
           sudo rm -rf armbian-msm8916
