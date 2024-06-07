@@ -24,7 +24,7 @@ jobs:
       - name: 安装依赖
         run: |
           sudo apt update -y
-          sudo apt-get install -y zip flex bison libncurses-dev gawk  libiberty-dev autoconf kmod bc build-essential gcc libc6 curl libstdc++6 git wget xz-utils libssl-dev cpio p7zip-full img2simg qemu-user-static
+          sudo apt-get install -y zip flex bison libncurses-dev gawk  libiberty-dev autoconf kmod bc build-essential gcc libc6 curl libstdc++6 git wget libssl-dev cpio p7zip-full img2simg qemu-user-static
           sudo apt clean
       - name: 下载源码
         run: |
@@ -53,7 +53,7 @@ jobs:
           sudo mount /dev/loop404p1 armbian
           sudo cp -rfp armbian/* temp
           sudo cp common-file/* temp/tmp
-          sudo cp kernel/*5.15.148+_5.15.148+-10.00.Custom_arm64.deb temp/tmp
+          sudo cp kernel/*_5.15.148+-10.00.Custom_arm64.deb temp/tmp
           sudo cp modem/firmware-${{ inputs.armbian_board }}.deb temp/tmp
           sudo mount --bind /proc temp/proc
           sudo mount --bind /dev temp/dev
@@ -70,8 +70,8 @@ jobs:
           sudo umount armbian-msm8916
           sudo umount armbian
           sudo losetup -d /dev/loop404
-          sudo img2simg armbian-msm8916.img rootfs-bookworm-5.15.img
-          sudo xz rootfs-bookworm-5.15.img
+          sudo img2simg armbian-msm8916.img rootfs-bookworm-5.15.1.img
+          sudo xz rootfs-bookworm-5.15.1.img
           sudo rm temp.img
           sudo rm -rf armbian
           sudo rm -rf armbian-msm8916
@@ -81,7 +81,7 @@ jobs:
       - name: 上传 Armbian 镜像至 Release
         uses: ncipollo/release-action@main
         with:
-          artifacts: "msm8916-armbian/rootfs-bookworm-5.15.img.xz,msm8916-armbian/kernel/boot.img"
+          artifacts: "msm8916-armbian/rootfs-bookworm-5.15.1.img,msm8916-armbian/kernel/boot.img"
           name: ${{ steps.repack.outputs.build_tag }}
           tag: ${{ steps.repack.outputs.build_tag }}
           allowUpdates: true
