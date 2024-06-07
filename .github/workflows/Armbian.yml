@@ -71,7 +71,6 @@ jobs:
           sudo umount armbian
           sudo losetup -d /dev/loop404
           sudo img2simg armbian-msm8916.img rootfs-bookworm-5.15.1.img
-          sudo xz rootfs-bookworm-5.15.1.img
           sudo rm temp.img
           sudo rm -rf armbian
           sudo rm -rf armbian-msm8916
