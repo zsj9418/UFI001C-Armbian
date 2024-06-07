@@ -53,7 +53,7 @@ jobs:
           sudo mount /dev/loop404p1 armbian
           sudo cp -rfp armbian/* temp
           sudo cp common-file/* temp/tmp
-          sudo cp kernel/*_5.15.148+-10.00.Custom_arm64.deb temp/tmp
+          sudo cp kernel/*.deb temp/tmp
           sudo cp modem/firmware-${{ inputs.armbian_board }}.deb temp/tmp
           sudo mount --bind /proc temp/proc
           sudo mount --bind /dev temp/dev
