@@ -2,7 +2,6 @@
 
 install_package() {
     apt update
-    apt upgrade -y
     dpkg -i /tmp/*.deb
     apt install -y coreutils network-manager modemmanager bc bsdmainutils gawk
     apt --fix-broken install -y
@@ -27,12 +26,10 @@ common_set() {
     rm /usr/lib/systemd/system/openstick-startup-diagnose.timer
     cp /tmp/mobian-setup-usb-network /usr/sbin/
     cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
-    cp /tmp/gpioled /usr/sbin/
-    cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
     cp /tmp/openstick-expanddisk-startup.sh /usr/sbin/
     cp /tmp/rules.v4 /etc/iptables/
     touch /etc/fstab
-    echo "LABEL=aarch64 / btrfs remount,defaults,noatime,compress=zstd:6,commit=30 0 0" > /etc/fstab
+    echo "LABEL=aarch64 / btrfs defaults,noatime,compress=zstd,commit=30 0 0" > /etc/fstab
     sed -i '13 i\nmcli c u USB' /etc/rc.local
     sed -i 1s/-e// /etc/rc.local
     sed -i s/forking/idle/g /usr/lib/systemd/system/rc-local.service
@@ -42,10 +39,6 @@ common_set() {
     sed -i '21 s/$sim/sim:sel/' /usr/sbin/openstick-sim-changer.sh
     rm /etc/localtime
     ln -s /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
-    systemctl mask ModemManager.service
-    systemctl enable mobian-setup-usb-network.service
-    systemctl enable openstick-expanddisk-startup.service
-    systemctl enable gpioled.service
 }
 
 clean_file() {
