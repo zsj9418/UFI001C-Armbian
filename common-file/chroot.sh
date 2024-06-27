@@ -27,6 +27,9 @@ common_set() {
     cp /tmp/mobian-setup-usb-network /usr/sbin/
     cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
     cp /tmp/openstick-expanddisk-startup.sh /usr/sbin/
+    cp /tmp/openstick-expanddisk-startup.service /usr/lib/systemd/system/openstick-expanddisk-startup.service
+    cp /tmp/gpioled /usr/sbin/
+    cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
     cp /tmp/rules.v4 /etc/iptables/
     touch /etc/fstab
     echo "LABEL=aarch64 / btrfs defaults,noatime,compress=zstd,commit=30 0 0" > /etc/fstab
