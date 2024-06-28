@@ -15,4 +15,3 @@ MSM8916设备的Armbian镜像，支持UFI001B/C, UFI003等型号。
 绿色 ： /sys/class/leds/green:internet/trigger
 红色 ： /sys/class/leds/red:os/trigger
 
-![Uploading fan.png…]()
