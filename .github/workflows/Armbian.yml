@@ -77,7 +77,7 @@ jobs:
           sudo rm -rf armbian-msm8916
           sudo rm -rf temp
           popd
-          echo "build_tag=Armbian_UFI001C_save_$(date +"%Y.%m")" >> ${GITHUB_OUTPUT}
+          echo "build_tag=Armbian_UFI001C_$(date +"%Y.%m")" >> ${GITHUB_OUTPUT}
       - name: 上传 Armbian 镜像至 Release
         uses: ncipollo/release-action@main
         with:
