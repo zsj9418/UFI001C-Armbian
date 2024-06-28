@@ -8,8 +8,8 @@ MSM8916设备的Armbian镜像，支持UFI001B/C, UFI003等型号。
 4. 选择构建型号
 5. 构建完成后会在源码目录得到rootfs.img
 
-5. fan 手动风扇 红色 
-6. gpiofan 自动散热 红色
+5. fan 手动风扇 默认绿色 
+6. gpiofan 自动散热 默认绿色
 
 
 蓝色 ： /sys/class/leds/blue:wifi/trigger
