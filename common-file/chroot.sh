@@ -28,7 +28,12 @@ common_set() {
     cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
     cp /tmp/gpioled.sh /usr/sbin/
     cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
+    cp /tmp/gpioled.sh /usr/sbin/
+    cp /tmp/gpiofan.service /usr/lib/systemd/system/gpiofan.service
+    cp /tmp/fan /usr/sbin/
     cp /tmp/rules.v4 /etc/iptables/
+    chmod +x /usr/sbin/gpiofan.sh
+    chmod +x /usr/sbin/fan
     chmod +x /usr/sbin/mobian-setup-usb-network
     chmod +x /usr/sbin/gpioled.sh
     touch /etc/fstab
