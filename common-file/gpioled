@@ -1,2 +1,2 @@
 #!/bin/sh
-echo default-on > /sys/class/leds/red:os/trigger && echo phy0tx > /sys/class/leds/blue:wifi/trigger && echo phy0rx > /sys/class/leds/green:internet/trigger
+echo none > /sys/class/leds/red:os/trigger && echo none > /sys/class/leds/blue:wifi/trigger && echo none > /sys/class/leds/green:internet/trigger
