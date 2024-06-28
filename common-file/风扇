@@ -1,0 +1,30 @@
+echo timer > /sys/class/leds/green\:internet/trigger 
+
+wenkon()
+{
+  echo "$1"
+  echo $[1000 - $1] > /sys/class/leds/green\:internet/delay_off
+  echo $1 > /sys/class/leds/green\:internet/delay_on 
+}
+
+echo -e "以下风扇级别：\n\r  0.关闭\r\n  1.一档轻风\n\r  2.二档微风\r\n  3.三档大风\r\n  4.四档狂风\r\n  5.火力全开\r\n请选择："
+read name
+if [ "$name" == "0" ]; then
+    echo "当前关闭"
+    wenkon 0
+elif [ "$name" == "1" ]; then
+    echo "当前选择一档"
+    wenkon 300
+elif [ "$name" == "2" ]; then
+    echo "当前选择二档"
+    wenkon 500
+elif [ "$name" == "3" ]; then
+    echo "当前选择三档"
+    wenkon 700
+elif [ "$name" == "4" ]; then
+    echo "当前选择四档"
+    wenkon 900
+elif [ "$name" == "5" ]; then
+    echo "当前选择全开"
+    wenkon 1000
+fi
