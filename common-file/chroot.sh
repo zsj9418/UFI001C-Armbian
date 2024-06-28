@@ -14,6 +14,11 @@ remove_package() {
     dpkg -l | grep -E "meson|linux-image" |awk '{print $2}'|xargs dpkg -P
 }
 
+set_language() {
+    locale-gen en_US en_US.UTF-8
+    update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+    fc-cache -fv
+}
 
 common_set() {
     rm /usr/sbin/openstick-startup-diagnose.sh
