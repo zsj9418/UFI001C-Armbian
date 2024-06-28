@@ -17,8 +17,8 @@ remove_package() {
 }
 
 set_language() {
-    locale-gen en_US en_US.UTF-8
-    update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+    locale-gen zh_CN zh_CN.UTF-8
+    update-locale LC_ALL=zh_CN.UTF-8 LANG=zh_CN.UTF-8
     fc-cache -fv
 }
 
