@@ -1,1 +1,9 @@
-1
+[Unit]
+Description=GPIO FAN
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/gpiofan.sh
+
+[Install]
+WantedBy=multi-user.target
