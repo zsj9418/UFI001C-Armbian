@@ -25,14 +25,14 @@ common_set() {
     rm /usr/lib/systemd/system/openstick-startup-diagnose.service
     rm /usr/lib/systemd/system/openstick-startup-diagnose.timer
     cp /tmp/mobian-setup-usb-network /usr/sbin/
-    cp /tmp/openstick-expanddisk-startup.sh /usr/sbin/
-    cp /tmp/gpioled /usr/sbin/
-    cp /tmp/gpiofan /usr/sbin/
-    cp /tmp/fan /usr/sbin/
-    cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
-    cp /tmp/gpiofan.service /usr/lib/systemd/system/gpiofan.service
     cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
+    cp /tmp/openstick-expanddisk-startup.sh /usr/sbin/
     cp /tmp/rules.v4 /etc/iptables/
+    cp /tmp/fan /usr/sbin/
+    cp /tmp/gpiofan /usr/sbin/
+    cp /tmp/gpioled /usr/sbin/
+    cp /tmp/gpiofan.service /usr/lib/systemd/system/gpiofan.service
+    cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
     chmod +x /usr/sbin/fan
     chmod +x /usr/sbin/gpiofan
     chmod +x /usr/sbin/gpioled
@@ -54,7 +54,6 @@ common_set() {
     ln -s /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
     systemctl enable mobian-setup-usb-network
     systemctl enable gpioled
-    systemctl enable gpiofan
 }
 
 clean_file() {
