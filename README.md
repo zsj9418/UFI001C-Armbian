@@ -10,7 +10,7 @@ MSM8916设备的Armbian镜像，支持UFI001B/C, UFI003等型号。
 
 6. fan 手动风扇 默认绿色 
 7. gpiofan 自动散热 默认绿色
-8. 关闭自动散热 systemctl start gpiofan
+8. 启动自动散热 systemctl enable gpiofan
 
 蓝色 ： /sys/class/leds/blue:wifi/trigger
 绿色 ： /sys/class/leds/green:internet/trigger
