@@ -8,6 +8,8 @@ install_package() {
     apt install -y libqmi-utils
     DEBIAN_FRONTEND=noninteractive apt install -y iptables-persistent
     apt install -y dnsmasq-base
+    apt-get upgrade && apt-get update --fix-missing
+    apt-get autoremove && apt-get clean && apt-get autoclean && journalctl --vacuum-size=5M
 }
 
 remove_package() {
