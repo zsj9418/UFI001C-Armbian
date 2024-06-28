@@ -37,6 +37,9 @@ common_set() {
     sed -i 1s/-e// /etc/rc.local
     sed -i s/forking/idle/g /usr/lib/systemd/system/rc-local.service
     sed -i s/'Odroid N2'/MSM8916/g /etc/armbian-release
+    sed -i s/'Armbian-unofficial'/Armbian/g /etc/armbian-image-release
+    sed -i s/'Armbian-unofficial'/Armbian/g /etc/armbian-release
+    sed -i s/'user-built'/ /g /etc/armbian-release
     sed -i s/'# ZRAM_PERCENTAGE=50'/ZRAM_PERCENTAGE=300/g /etc/default/armbian-zram-config
     sed -i s/'# MEM_LIMIT_PERCENTAGE=50'/MEM_LIMIT_PERCENTAGE=300/g /etc/default/armbian-zram-config
     sed -i '21 s/$sim/sim:sel/' /usr/sbin/openstick-sim-changer.sh
