@@ -26,8 +26,6 @@ common_set() {
     rm /usr/lib/systemd/system/openstick-startup-diagnose.timer
     cp /tmp/mobian-setup-usb-network /usr/sbin/
     cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
-    cp /tmp/openstick-expanddisk-startup.sh /usr/sbin/
-    cp /tmp/openstick-expanddisk-startup.service /usr/lib/systemd/system/openstick-expanddisk-startup.service
     cp /tmp/gpioled /usr/sbin/
     cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
     cp /tmp/rules.v4 /etc/iptables/
@@ -36,10 +34,10 @@ common_set() {
     sed -i '13 i\nmcli c u USB' /etc/rc.local
     sed -i 1s/-e// /etc/rc.local
     sed -i s/forking/idle/g /usr/lib/systemd/system/rc-local.service
-    sed -i s/'Odroid N2'/MSM8916/g /etc/armbian-release
+    sed -i s/'Odroid N2'/UFI001C/g /etc/armbian-release
     sed -i s/'Armbian-unofficial'/Armbian/g /etc/armbian-image-release
     sed -i s/'Armbian-unofficial'/Armbian/g /etc/armbian-release
-    sed -i s/'user-built'/ /g /etc/armbian-release
+    sed -i s/'IMAGE_TYPE=user-built'/IMAGE_TYPE=/g /etc/armbian-release
     sed -i s/'# ZRAM_PERCENTAGE=50'/ZRAM_PERCENTAGE=300/g /etc/default/armbian-zram-config
     sed -i s/'# MEM_LIMIT_PERCENTAGE=50'/MEM_LIMIT_PERCENTAGE=300/g /etc/default/armbian-zram-config
     sed -i '21 s/$sim/sim:sel/' /usr/sbin/openstick-sim-changer.sh
