@@ -8,17 +8,14 @@ install_package() {
     apt install -y libqmi-utils
     DEBIAN_FRONTEND=noninteractive apt install -y iptables-persistent
     apt install -y dnsmasq-base
+    apt-get upgrade && apt-get update --fix-missing
+    apt-get autoremove && apt-get clean && apt-get autoclean && journalctl --vacuum-size=5M
 }
 
 remove_package() {
     dpkg -l | grep -E "meson|linux-image" |awk '{print $2}'|xargs dpkg -P
 }
 
-set_language() {
-    locale-gen zh_CN zh_CN.UTF-8
-    update-locale LC_ALL=zh_CN.UTF-8 LANG=zh_CN.UTF-8
-    fc-cache -fv
-}
 
 common_set() {
     rm /usr/sbin/openstick-startup-diagnose.sh
