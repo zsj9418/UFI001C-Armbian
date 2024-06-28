@@ -28,7 +28,7 @@ jobs:
           sudo apt clean
       - name: 下载源码
         run: |
-          git clone https://github.com/YANXIAOXIH/msm8916-armbian
+          git clone https://github.com/YANXIAOXIH/UFI001C-Armbian
       - name: 下载镜像
         run: |
           pushd msm8916-armbian
@@ -77,7 +77,7 @@ jobs:
           sudo rm -rf armbian-msm8916
           sudo rm -rf temp
           popd
-          echo "build_tag=Armbian_UFI_save_$(date +"%Y.%m")" >> ${GITHUB_OUTPUT}
+          echo "build_tag=Armbian_UFI001C_save_$(date +"%Y.%m")" >> ${GITHUB_OUTPUT}
       - name: 上传 Armbian 镜像至 Release
         uses: ncipollo/release-action@main
         with:
@@ -97,4 +97,3 @@ jobs:
             - 全局配置命令：armbian-config
             - WiFi名称：4G-UFI
             - WiFi密码：12345678
-            - 如遇无法开机的情况请使用未超频内核boot-no-overclock.img
