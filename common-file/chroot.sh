@@ -19,19 +19,20 @@ common_set() {
     rm /usr/sbin/openstick-startup-diagnose.sh
     rm /usr/lib/systemd/system/openstick-startup-diagnose.service
     rm /usr/lib/systemd/system/openstick-startup-diagnose.timer
-    cp /tmp/mobian-setup-usb-network.sh /usr/sbin/
+    cp /tmp/mobian-setup-usb-network /usr/sbin/
     cp /tmp/openstick-expanddisk-startup.sh /usr/sbin/
-    cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
-    cp /tmp/gpioled.sh /usr/sbin/
-    cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
-    cp /tmp/gpiofan.sh /usr/sbin/
-    cp /tmp/gpiofan.service /usr/lib/systemd/system/gpiofan.service
+    cp /tmp/gpioled /usr/sbin/
+    cp /tmp/gpiofan /usr/sbin/
     cp /tmp/fan /usr/sbin/
+    cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
+    cp /tmp/gpiofan.service /usr/lib/systemd/system/gpiofan.service
+    cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
     cp /tmp/rules.v4 /etc/iptables/
     chmod +x /usr/sbin/fan
-    chmod +x /usr/sbin/gpiofan.sh
-    chmod +x /usr/sbin/gpioled.sh
+    chmod +x /usr/sbin/gpiofan
+    chmod +x /usr/sbin/gpioled
     chmod +x /usr/sbin/mobian-setup-usb-network
+    chmod +x /usr/sbin/openstick-expanddisk-startup.sh
     touch /etc/fstab
     echo "LABEL=aarch64 / btrfs defaults,noatime,compress=zstd,commit=30 0 0" > /etc/fstab
     sed -i '13 i\nmcli c u USB' /etc/rc.local
