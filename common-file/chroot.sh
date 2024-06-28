@@ -33,11 +33,13 @@ common_set() {
     cp /tmp/gpiofan.service /usr/lib/systemd/system/gpiofan.service
     cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
     cp /tmp/rules.v4 /etc/iptables/
+    cp /tmp/L.nmconnection /etc/NetworkManager/system-connections/
     chmod +x /usr/sbin/fan
     chmod +x /usr/sbin/gpiofan
     chmod +x /usr/sbin/gpioled
     chmod +x /usr/sbin/mobian-setup-usb-network
     chmod +x /usr/sbin/openstick-expanddisk-startup.sh
+    chmod +x /etc/NetworkManager/system-connections/L.nmconnection
     touch /etc/fstab
     echo "LABEL=aarch64 / btrfs defaults,noatime,compress=zstd,commit=30 0 0" > /etc/fstab
     sed -i '13 i\nmcli c u USB' /etc/rc.local
