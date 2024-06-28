@@ -21,7 +21,8 @@ common_set() {
     rm /usr/sbin/openstick-startup-diagnose.sh
     rm /usr/lib/systemd/system/openstick-startup-diagnose.service
     rm /usr/lib/systemd/system/openstick-startup-diagnose.timer
-    cp /tmp/mobian-setup-usb-network /usr/sbin/
+    cp /tmp/mobian-setup-usb-network.sh /usr/sbin/
+    cp /tmp/openstick-expanddisk-startup.sh /usr/sbin/
     cp /tmp/mobian-setup-usb-network.service /usr/lib/systemd/system/mobian-setup-usb-network.service
     cp /tmp/gpioled.sh /usr/sbin/
     cp /tmp/gpioled.service /usr/lib/systemd/system/gpioled.service
