@@ -53,9 +53,6 @@ common_set() {
     systemctl enable mobian-setup-usb-network
     systemctl enable gpioled
     systemctl enable gpiofan
-    systemctl start gpioled.service
-    systemctl start gpiofan.servic
-    systemctl start mobian-setup-usb-network.service
 }
 
 clean_file() {
