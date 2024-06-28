@@ -3,7 +3,7 @@ Description=GPIO FAN
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/gpiofan.sh
+ExecStart=/usr/sbin/gpiofan
 
 [Install]
 WantedBy=multi-user.target
