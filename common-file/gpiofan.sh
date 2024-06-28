@@ -1,10 +1,10 @@
 #!/bin/bash
 
 secho(){
-  echo `date`"$1" >> /root/dont.log
+  echo `date`"$1" >> /root/gpiofan.log
 }
 #删除日志
-rm -r /root/dont.log
+rm -r /root/gpiofan.log
 
 secho "初始化引脚"
 echo timer > /sys/class/leds/green\:internet/trigger 
@@ -23,7 +23,7 @@ wenkon()
 #日志大于10M删除
 clog()
 {
-  FILE_PATH=/root/dont.log
+  FILE_PATH=/root/gpiofan.log
   if [ -f "$FILE_PATH" ]; then
       FILE_SIZE=`stat -c "%s" "$FILE_PATH"`
   else
