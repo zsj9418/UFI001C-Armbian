@@ -41,13 +41,18 @@ common_set() {
     chmod +x /usr/sbin/mobian-setup-usb-network
     chmod +x /usr/sbin/openstick-expanddisk-startup.sh
     touch /etc/fstab
-    echo "LABEL=aarch64 / btrfs defaults,noatime,compress=zstd,commit=30 0 0" > /etc/fstab
     sed -i '13 i\nmcli c u USB' /etc/rc.local
     sed -i 1s/-e// /etc/rc.local
     sed -i s/forking/idle/g /usr/lib/systemd/system/rc-local.service
+    
+    sed -i s/odroidn2/ufi001c/g /etc/armbian-release
     sed -i s/'Odroid N2'/UFI001C/g /etc/armbian-release
-    sed -i s/'Armbian-unofficial'/Armbian/g /etc/armbian-image-release
-    sed -i s/'Armbian-unofficial'/Armbian/g /etc/armbian-release
+    sed -i s/meson-g12b/msm8916/g /etc/armbian-release
+    sed -i s/meson64/qcom/g /etc/armbian-release
+    sed -i s/odroidn2/ufi001c/g /etc/armbian-image-release
+    sed -i s/'Odroid N2'/UFI001C/g /etc/armbian-image-release
+    sed -i s/meson-g12b/msm8916/g /etc/armbian-image-release
+    sed -i s/meson64/qcom/g /etc/armbian-image-release
     sed -i s/'IMAGE_TYPE=user-built'/IMAGE_TYPE=/g /etc/armbian-release
     sed -i s/'# ZRAM_PERCENTAGE=50'/ZRAM_PERCENTAGE=300/g /etc/default/armbian-zram-config
     sed -i s/'# MEM_LIMIT_PERCENTAGE=50'/MEM_LIMIT_PERCENTAGE=300/g /etc/default/armbian-zram-config
