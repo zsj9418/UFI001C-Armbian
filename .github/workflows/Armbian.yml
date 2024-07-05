@@ -32,7 +32,7 @@ jobs:
       - name: 下载镜像
         run: |
           pushd UFI001C-Armbian
-          wget https://ghproxy.net/https://github.com/armbian/os/releases/download/24.8.0-trunk.323/Armbian_24.8.0-trunk.323_Odroidn2_trixie_current_6.6.36_minimal.img.xz
+          wget https://github.com/armbian/os/releases/download/24.8.0-trunk.323/Armbian_24.8.0-trunk.323_Odroidc2_trixie_current_6.6.36_minimal.img.xz
           xz -dc Armbian_*.xz > armbian.img
           popd
       - name: 打包 Armbian
