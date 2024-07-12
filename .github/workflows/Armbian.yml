@@ -32,7 +32,7 @@ jobs:
       - name: 下载镜像
         run: |
           pushd UFI001C-Armbian
-          wget https://github.com/ophub/amlogic-s9xxx-armbian/releases/download/Armbian_bookworm_save_2024.07/Armbian_24.8.0-trunk_6.6.36.img.gz
+          wget https://github.com/ophub/amlogic-s9xxx-armbian/releases/download/Armbian_noble_save_2024.07/Armbian_24.8.0-trunk_6.6.36.img.gz
           gunzip Armbian_*.gz
           mv Armbian_*.img armbian.img
           popd
