@@ -3,7 +3,7 @@
 install_package() {
     apt update
     dpkg -i /tmp/*.deb
-    apt install -y coreutils network-manager modemmanager bc bsdmainutils gawk
+    apt install -y coreutils network-manager modemmanager bc bsdmainutils gawk netplan.io
     apt --fix-broken install -y
     apt install -y libqmi-utils
     DEBIAN_FRONTEND=noninteractive apt install -y iptables-persistent
