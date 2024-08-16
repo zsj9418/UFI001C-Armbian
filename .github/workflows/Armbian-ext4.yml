@@ -34,7 +34,7 @@ jobs:
           pushd UFI001C-Armbian
           wget  https://github.com/liyiecho/armbian-msm8916/releases/download/20240729-0336/Armbian.img.xz
           xz -d Armbian.img.xz
-          mv Armbian_*.img armbian.img
+          mv Armbian.img armbian.img
           popd
       - name: 打包 Armbian
         id: repack
