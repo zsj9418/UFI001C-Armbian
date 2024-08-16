@@ -32,7 +32,7 @@ jobs:
       - name: 下载镜像
         run: |
           pushd UFI001C-Armbian
-          wget  https://github.com/liyiecho/armbian-msm8916/releases/download/20240715-0336/Armbian.img.xz
+          wget  https://github.com/liyiecho/armbian-msm8916/releases/download/20240701-0335/Armbian.img.xz
           xz -d Armbian.img.xz
           popd
       - name: 打包 Armbian
