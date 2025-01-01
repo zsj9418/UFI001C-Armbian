@@ -2,8 +2,7 @@
 # Description: Build Armbian
 # Copyright (C) 2023 https://github.com/windbell-project/msm8916-armbian
 #==========================================================================
-./compile.sh build BOARD=som3588-cat BRANCH=vendor BUILD_DESKTOP=no BUILD_MINIMAL=yes KERNEL_CONFIGURE=no RELEASE=bookworm
-name: Rebuild armbian.test
+name: Rebuild armbian.som3588
  ，缪缪有，0
 on:
   workflow_dispatch:
@@ -11,11 +10,10 @@ on:
       armbian_board:
         description: "选择设备"
         required: true
-        default: "ufi003"
+        default: "som3588"
         type: choice
         options:
-          - ufi001c
-          - ufi003
+          - som3588
 
 jobs:
   build:
