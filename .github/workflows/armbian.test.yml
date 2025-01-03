@@ -1,53 +1,136 @@
-#==========================================================================
-# Description: Build Armbian
-# Copyright (C) 2023 https://github.com/windbell-project/msm8916-armbian
-#==========================================================================
-name: Rebuild armbian.som3588
- ，缪缪有，0
-on:
-  workflow_dispatch:
-    inputs:
-      armbian_board:
-        description: "选择设备"
-        required: true
-        default: "som3588"
+name: Build som3588-cat
+  
+on:  
+  workflow_dispatch:  
+    inputs:  
+      BOARD:  
+        description: 'Board type'  
+        required: true 
+        default: 'som3588-cat'
         type: choice
         options:
-          - som3588
+          - som3588-cat
+      BRANCH:  
+        description: 'Armbian branch'  
+        default: 'vendor'  
+        required: false 
+        type: choice 
+        options:
+          - vendor
+          - edge
+      RELEASE:  
+        description: 'Release name' 
+        default: 'bookworm'
+        required: true  
+        type: choice
+        options:
+          - jammy
+          - bookworm
+          - noble
+          - bullseye
+      Version:
+        description: 'Armbian Version'
+        default: 'v24.11'
+        required: false 
+        type: choice
+        options: 
+          - main
+          - v24.11
+          - v24.08
+      BUILD_DESKTOP:  
+        description: 'Build desktop environment'  
+        default: 'no'  
+        required: false  
+        type: choice
+        options:
+          - no
+      COMPRESS_OUTPUTIMAGE:  
+        description: 'Compress output image'  
+        default: 'sha,xz'  
+        required: false  
+        type: string  
+      BOOT_LOGO:  
+        description: 'Include boot logo'  
+        default: 'yes'  
+        required: false  
+        type: choice 
+        options:
+          - yes
+          - no
+env:
+  TZ: America/New_York
+  
+jobs:  
+  build-armbian:  
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Checkout  
+        uses: actions/checkout@v3  
+      
+      - name: Initialization environment
+        id: init
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          # 清理 Docker 镜像和软件缓存
+          docker_images_ids=$(docker images -q)
+          if [ -n "$docker_images_ids" ]; then
+            docker rmi $docker_images_ids
+          fi
+          docker image prune -a -f
+          sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* openjdk* mysql* php* mongodb* dotnet* moby* snapd* android* || true
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq clean
+          # 设置时区并创建工作目录
+          sudo timedatectl set-timezone "${TZ}"
+          sudo mkdir -p /mnt/workdir
+          sudo chown $USER:$GROUPS /mnt/workdir
+          df -Th
+  
+      - name: Download source code
+        working-directory: /mnt/workdir
+        run: |
+          df -hT ${PWD}
+          git clone -q --single-branch --depth=1 --branch=${{ github.event.inputs.Version }} https://github.com/YANXIAOXIH/build.git build 
+          ln -sf /mnt/workdir/build $GITHUB_WORKSPACE/build
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 安装依赖
-        run: |
-          sudo apt update -y
-          sudo apt-get -y install git
-      - name: 下载源码
-        run: |
-          git clone --depth=1 --branch=main https://github.com/YANXIAOXIH/build
-      - name: 下载镜像
-        run: |
-          pushd build
-          ./compile.sh build BOARD=som3588-cat BRANCH=vendor BUILD_DESKTOP=no BUILD_MINIMAL=yes KERNEL_CONFIGURE=no RELEASE=bookworm
-          popd
-      - name: 上传 Armbian 镜像至 Release
+  
+      - name: Compile Armbian [ ${{ inputs.BOARD }} ${{ inputs.RELEASE }} ] 
+        run: |  
+          cd /mnt/workdir/build/ 
+          ./compile.sh BOARD=${{ inputs.BOARD }} RELEASE=${{ inputs.RELEASE }} BRANCH=${{ inputs.BRANCH }} BUILD_MINIMAL=no BUILD_DESKTOP=${{ inputs.BUILD_DESKTOP }} \
+                           KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=${{ inputs.COMPRESS_OUTPUTIMAGE }} BOOT_LOGO=${{ inputs.BOOT_LOGO }} 
+          
+      - name: Set current year 和 month  
+        run: |  
+          echo "CURRENT_YEAR_MONTH=$(date +'%Y%m')" >> $GITHUB_ENV  
+
+      - name: Prepare Release Metadata
+        run: |  
+          # 提取版本号
+          # latest_image=$(ls ${{ github.workspace }}/build/output/images/Armbian-unofficial_*.img.xz | grep -oE 'Armbian-unofficial_[0-9.]+_.*' | sort -V | tail -n 1) 
+          latest_image=$(ls ${{ github.workspace }}/build/output/images/Armbian-unofficial_*.img.xz | sort -V | tail -n 1)
+          version=$(echo "$latest_image" | cut -d'_' -f2)  
+  
+          # 将版本号设置为环境变量  
+          echo "VERSION=$version" >> $GITHUB_ENV
+        
+      - name: Upload image to Release  
+        if: success() 
         uses: ncipollo/release-action@main
-        with:
-          artifacts: "*/*/*.img"
-          name: ${{ steps.repack.outputs.build_tag }}
-          tag: ${{ steps.repack.outputs.build_tag }}
-          allowUpdates: true
-          removeArtifacts: false
-          replacesArtifacts: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            ### 以下是 Armbian OS 镜像
-            - 本次固件基带为${{ inputs.armbian_board }}
-            - 系统信息：
-            - 默认用户名：root
-            - 默认密码：1234
-            - 全局配置命令：armbian-config
-            - WiFi名称：4G-UFI
-            - WiFi密码：12345678
-            - 如遇无法开机的情况请使用未超频内核boot-no-overclock.img
+        with:  
+          tag: "Armbian_${{ github.event.inputs.Version }}_${{ github.event.inputs.RELEASE }}_${{ env.CURRENT_YEAR_MONTH }}"  
+          name: "Armbian_${{ github.event.inputs.Version }}_${{ github.event.inputs.RELEASE }}_${{ env.CURRENT_YEAR_MONTH }}"  
+          artifacts: "${{ github.workspace }}/build/output/images/*"  
+          allowUpdates: true 
+          removeArtifacts: false 
+          replacesArtifacts: true 
+          token: ${{ secrets.MY_TOKEN }}  
+          body: |  
+            ### Armbian Image Information  
+            - Release: ${{ github.event.inputs.RELEASE }}    
+            - Version: ${{ env.VERSION }}  
+            ### Armbian Image Verification  
+            - sha256sum   
+          draft: false  
+          prerelease: false  
