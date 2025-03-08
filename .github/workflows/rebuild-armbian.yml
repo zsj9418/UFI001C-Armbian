@@ -1,7 +1,7 @@
 #==========================================================================
-# Description: 手动生成和上传 boot.img 和 rootfs 镜像
+# Description: 手动生成和上传 boot.img 和多个 rootfs 镜像
 #==========================================================================
-name: Manual Armbian Build
+name: UFI Armbian Build
 
 on:
   workflow_dispatch: # 手动触发
@@ -14,15 +14,6 @@ on:
         options:
           - ufi001c
           - ufi003
-      rootfs_version:
-        description: "选择 rootfs 版本"
-        required: true
-        default: "bookworm"
-        type: choice
-        options:
-          - bookworm
-          - jammy
-          - noble
 
 jobs:
   build:
@@ -36,46 +27,64 @@ jobs:
           sudo apt-get install -y xz-utils zip flex bison libncurses-dev gawk libiberty-dev autoconf kmod bc build-essential gcc libc6 curl libstdc++6 git wget libssl-dev cpio p7zip-full qemu-user-static netplan.io
           sudo apt clean
 
-      # 2. 下载 boot.img 和 rootfs 镜像
-      - name: 下载 boot.img 和 rootfs 镜像
+      # 2. 创建工作目录并下载 boot.img
+      - name: 下载 boot.img
         run: |
           mkdir -p UFI001C-Armbian
           cd UFI001C-Armbian
-          # 下载 boot.img（通用）
           wget https://github.com/YANXIAOXIH/UFI001C-Armbian/releases/download/Armbian_UFI_save_2024.04/boot.img
-          # 根据选择的 rootfs_version 下载对应的 rootfs 镜像
-          wget https://github.com/YANXIAOXIH/UFI001C-Armbian/releases/download/Armbian_UFI_save_2024.04/rootfs-${{ inputs.rootfs_version }}.img
 
-      # 3. 打包 rootfs 镜像
+      # 3. 下载多个 rootfs 镜像
+      - name: 下载 rootfs 镜像
+        run: |
+          cd UFI001C-Armbian
+          wget https://github.com/YANXIAOXIH/UFI001C-Armbian/releases/download/Armbian_UFI_save_2024.04/rootfs-bookworm.img
+          wget https://github.com/YANXIAOXIH/UFI001C-Armbian/releases/download/Armbian_UFI_save_2024.04/rootfs-jammy.img
+          wget https://github.com/YANXIAOXIH/UFI001C-Armbian/releases/download/Armbian_UFI_save_2024.04/rootfs-noble.img
+
+      # 4. 打包所有版本的 rootfs 镜像
       - name: 打包 Armbian 镜像
         id: repack
         run: |
           cd UFI001C-Armbian
-          # 创建临时目录和文件系统
-          sudo mkdir temp
-          sudo mkdir armbian-msm8916
+          
+          # 打包 bookworm 版本
+          sudo dd if=/dev/zero of=armbian-bookworm.img bs=1M count=3000
+          sudo mkfs.btrfs armbian-bookworm.img
+          sudo mount -o compress=zstd:15 armbian-bookworm.img temp
+          sudo cp rootfs-bookworm.img temp/
+          sudo cp boot.img temp/
+          sudo umount temp
+          sudo xz armbian-bookworm.img
 
-          # 将 rootfs 和 boot 镜像整合到新文件
-          sudo dd if=/dev/zero of=armbian-${{ inputs.rootfs_version }}.img bs=1M count=3000
-          sudo mkfs.btrfs armbian-${{ inputs.rootfs_version }}.img
-          sudo mount -o compress=zstd:15 armbian-${{ inputs.rootfs_version }}.img armbian-msm8916
+          # 打包 jammy 版本
+          sudo dd if=/dev/zero of=armbian-jammy.img bs=1M count=3000
+          sudo mkfs.btrfs armbian-jammy.img
+          sudo mount -o compress=zstd:15 armbian-jammy.img temp
+          sudo cp rootfs-jammy.img temp/
+          sudo cp boot.img temp/
+          sudo umount temp
+          sudo xz armbian-jammy.img
 
-          # 整合 boot 和 rootfs 文件
-          sudo cp rootfs-${{ inputs.rootfs_version }}.img armbian-msm8916/
-          sudo cp boot.img armbian-msm8916/
+          # 打包 noble 版本
+          sudo dd if=/dev/zero of=armbian-noble.img bs=1M count=3000
+          sudo mkfs.btrfs armbian-noble.img
+          sudo mount -o compress=zstd:15 armbian-noble.img temp
+          sudo cp rootfs-noble.img temp/
+          sudo cp boot.img temp/
+          sudo umount temp
+          sudo xz armbian-noble.img
 
-          # 清理挂载点并压缩最终镜像
-          sudo umount armbian-msm8916
-          sudo xz armbian-${{ inputs.rootfs_version }}.img
+          echo "build_tag=Armbian_${{ inputs.armbian_board }}_$(date +"%Y.%m")" >> ${GITHUB_OUTPUT}
 
-          echo "build_tag=Armbian_${{ inputs.armbian_board }}_${{ inputs.rootfs_version }}" >> ${GITHUB_OUTPUT}
-
-      # 4. 上传到 GitHub Release
+      # 5. 上传所有版本的镜像到 GitHub Release
       - name: 上传 Armbian 镜像至 Release
         uses: ncipollo/release-action@main
         with:
           artifacts: |
-            UFI001C-Armbian/armbian-${{ inputs.rootfs_version }}.img.xz
+            UFI001C-Armbian/armbian-bookworm.img.xz
+            UFI001C-Armbian/armbian-jammy.img.xz
+            UFI001C-Armbian/armbian-noble.img.xz
             UFI001C-Armbian/boot.img
           name: ${{ steps.repack.outputs.build_tag }}
           tag: ${{ steps.repack.outputs.build_tag }}
@@ -86,10 +95,14 @@ jobs:
           body: |
             ### 以下是 Armbian OS 镜像
             - 固件基带：${{ inputs.armbian_board }}
-            - rootfs 版本：${{ inputs.rootfs_version }}
             - 系统信息：
               - 默认用户名：root
               - 默认密码：1234
               - 全局配置命令：armbian-config
               - WiFi名称：4G-UFI
               - WiFi密码：12345678
+            - 包含以下版本：
+              - rootfs-bookworm.img.xz
+              - rootfs-jammy.img.xz
+              - rootfs-noble.img.xz
+            - 通用启动镜像：boot.img
