@@ -2,7 +2,6 @@
 # Description: 手动生成和上传 boot.img 和多个 rootfs 镜像
 #==========================================================================
 name: UFI Armbian Build
-
 on:
   workflow_dispatch: # 手动触发
     inputs:
@@ -48,6 +47,9 @@ jobs:
         run: |
           cd UFI001C-Armbian
           
+          # 创建临时目录
+          sudo mkdir -p temp
+
           # 打包 bookworm 版本
           sudo dd if=/dev/zero of=armbian-bookworm.img bs=1M count=3000
           sudo mkfs.btrfs armbian-bookworm.img
@@ -106,3 +108,4 @@ jobs:
               - rootfs-jammy.img.xz
               - rootfs-noble.img.xz
             - 通用启动镜像：boot.img
+
